@@ -22,7 +22,7 @@ namespace Railroad.View
 
         private void Main_Shown(object sender, EventArgs e)
         {
-            if (MainCT.member == null)
+            if (mct.Checknull() == true)
             {
                 Login login = new Login(mct);
                 login.Show();

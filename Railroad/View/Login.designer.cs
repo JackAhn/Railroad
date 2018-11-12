@@ -94,7 +94,7 @@
             this.button3.Location = new System.Drawing.Point(204, 192);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(201, 28);
-            this.button3.TabIndex = 4;
+            this.button3.TabIndex = 5;
             this.button3.Text = "아이디/비밀번호 찾기";
             this.button3.UseVisualStyleBackColor = true;
             // 
@@ -104,7 +104,7 @@
             this.textBox1.Location = new System.Drawing.Point(106, 79);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(241, 26);
-            this.textBox1.TabIndex = 5;
+            this.textBox1.TabIndex = 1;
             // 
             // textBox2
             // 
@@ -112,7 +112,7 @@
             this.textBox2.Location = new System.Drawing.Point(106, 135);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(241, 26);
-            this.textBox2.TabIndex = 5;
+            this.textBox2.TabIndex = 2;
             // 
             // Login
             // 

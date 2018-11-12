@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Railroad.Model
 {
-    class Member
+    public class Member
     {
         public string Mname { get; set; }
         public string Mid { get; set; }

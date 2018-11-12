@@ -8,7 +8,9 @@ namespace Railroad.Model
 {
     public class LoginMember
     {
-        public string memberno { get; set; }
+        public int memberno { get; set; }
+        public string memberid { get; set; }
+        public string memberpw { get; set; }
         public string membername { get; set; }
     }
 }

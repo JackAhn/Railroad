@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Railroad.DAO
 {
-    class MemberDAO
+    public class MemberDAO
     {
         private static MemberDAO instance;
 
@@ -62,16 +62,42 @@ namespace Railroad.DAO
 
         }
 
-        public bool isLogin(string id, string pw)
+        public string chkLogin(string id, string pw)
         {
             try
             {
                 con = new MySqlConnection(url);
                 con.Open();
-                string query = "select * from member where "
+                string query = "select * from member where memberid='"+id+"' and memberpw='"+pw+"'";
+                command = new MySqlCommand(query, con);
+                reader = command.ExecuteReader();
+                if (reader.Read())
+                    return reader.GetString("membername");
+                return null;
             }catch(MySqlException e)
             {
+                checkException(e.Number);
+                return null;
+            }
+        }
 
+        public string findMemberno(string id, string pw)
+        {
+            try
+            {
+                con = new MySqlConnection(url);
+                con.Open();
+                string query = "select memberno from member where memberid='" + id + "' and memberpw='" + pw + "'";
+                command = new MySqlCommand(query, con);
+                reader = command.ExecuteReader();
+                if (reader.Read())
+                    return reader.GetString("memberno");
+                return null;
+            }
+            catch (MySqlException e)
+            {
+                checkException(e.Number);
+                return null;
             }
         }
 
@@ -83,7 +109,7 @@ namespace Railroad.DAO
                     MessageBox.Show("연결 실패");
                     break;
                 case 1045:
-                    MessageBox.Show("db 아이디, 비밀번호 오류");
+                    MessageBox.Show("db 연결 오류");
                     break;
             }
         }

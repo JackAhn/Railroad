@@ -34,13 +34,16 @@ namespace Railroad
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(memberDAO.isLogin(this.textBox1.Text, this.textBox2.Text))
+            string membername = memberDAO.chkLogin(this.textBox1.Text, this.textBox2.Text); //회원 존재 유무에 따라 null 또는 회원의 이름 반환
+            if(membername != null)
             {
-
+                mct.setMemberdata(this.textBox1.Text, this.textBox2.Text, membername, memberDAO); //모델에 데이터 저장
+                MessageBox.Show(membername + "님 환영합니다.", "로그인 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
             }
             else
             {
-
+                MessageBox.Show("비밀번호가 일치하지 않습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

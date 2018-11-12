@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Railroad.Model
 {
-    class Train
+    public class Train
     {
 
     }
