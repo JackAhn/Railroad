@@ -11,72 +11,110 @@ namespace Railroad.DAO
 {
     public class MemberDAO
     {
+        private static string url = "datasource=localhost;port=3306;username=root;password=1234;";
+        private MySqlConnection con;
+        private MySqlDataReader reader;
+        private MySqlCommand command;
         private static MemberDAO instance;
+
+        public MemberDAO()
+        {
+            con = new MySqlConnection(url);
+            con.Open();
+               command = con.CreateCommand();
+            initDB(); //db 초기화
+        }
 
         public static MemberDAO getInstance()
         {
             if (instance == null)
+            {
                 instance = new MemberDAO();
+            }
             return instance;
         }
 
-        private static string url = "Server=localhost;Database=railroad;Uid=root;Pwd=1234";
-        private MySqlConnection con;
-        private MySqlDataReader reader;
-        private MySqlCommand command;
+        private int executeNonQuery(string query)
+        {
+            try
+            {
+                command.CommandText = query;
+                return command.ExecuteNonQuery();
+            }
+            catch (MySqlException e)
+            {
+                MessageBox.Show(e.Message);
+                return 0;
+            }
+        }
+
+        private void initDB()
+        {
+            try
+            {
+                try
+                {
+                    executeNonQuery("drop database railroad");
+                }catch(MySqlException e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+
+                executeNonQuery("create database railroad");
+                executeNonQuery("use railroad");
+                executeNonQuery("create table member(memberno int primary key not null auto_increment, membername varchar(20), memberid varchar(20), " +
+                    "memberpw varchar(30), memberphone varchar(40))");
+                executeNonQuery("create table train(trainno int primary key not null, departure varchar(20), starttime date, destination varchar(20), stoptime date," +
+                    " seat int)");
+                executeNonQuery("create table ticket(ticketno int, memberno int, membername varchar(15), trainno int, departure varchar(20), destination varchar(20), time date, " +
+                    "foreign key(memberno) references member(memberno) on update cascade on delete cascade, foreign key(trainno) references train(trainno) on delete cascade)");
+            }
+            catch (MySqlException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
 
         public bool isDuplicate(string id)
         {
             try
             {
-                con = new MySqlConnection(url);
-                con.Open();
                 string query = "select memberid from member where memberid='"+id+"'";
-                command = new MySqlCommand(query, con);
+                command.CommandText = query;
                 reader = command.ExecuteReader();
                 if (reader.Read())
+                {
                     return false;
-                con.Close();
+                }
                 return true;
             } catch(MySqlException e)
             {
-                checkException(e.Number);
+                MessageBox.Show(e.Message);
                 return false;
             }
         }
 
         public int insertMember(Member member)
         {
-            try
-            {
-                con = new MySqlConnection(url);
-                con.Open();
-                string query = "insert into member(memberno, membername, memberid, memberpw, memberphone) values('0', '"+member.Mname+"', '"+member.Mid+"', '"+member.Mpw+"', '"+member.Mphone+"')";
-                command = new MySqlCommand(query, con);
-                return command.ExecuteNonQuery();
-            } catch(MySqlException e)
-            {
-                checkException(e.Number);
-                return 0;
-            }
-
+            return executeNonQuery("insert into member(memberno, membername, memberid, memberpw, memberphone) values" +
+                   "('0', '" + member.Mname + "', '" + member.Mid + "', '" + member.Mpw + "', '" + member.Mphone + "')");
         }
 
         public string chkLogin(string id, string pw)
         {
             try
             {
-                con = new MySqlConnection(url);
-                con.Open();
                 string query = "select * from member where memberid='"+id+"' and memberpw='"+pw+"'";
-                command = new MySqlCommand(query, con);
+                command.CommandText = query;
                 reader = command.ExecuteReader();
                 if (reader.Read())
+                {
                     return reader.GetString("membername");
+                }
                 return null;
             }catch(MySqlException e)
             {
-                checkException(e.Number);
+                MessageBox.Show(e.Message);
                 return null;
             }
         }
@@ -85,32 +123,19 @@ namespace Railroad.DAO
         {
             try
             {
-                con = new MySqlConnection(url);
-                con.Open();
                 string query = "select memberno from member where memberid='" + id + "' and memberpw='" + pw + "'";
-                command = new MySqlCommand(query, con);
+                command.CommandText = query;
                 reader = command.ExecuteReader();
                 if (reader.Read())
+                {
                     return reader.GetString("memberno");
+                }
                 return null;
             }
             catch (MySqlException e)
             {
-                checkException(e.Number);
+                MessageBox.Show(e.Message);
                 return null;
-            }
-        }
-
-        private void checkException(int number)
-        {
-            switch (number)
-            {
-                case 0:
-                    MessageBox.Show("연결 실패");
-                    break;
-                case 1045:
-                    MessageBox.Show("db 연결 오류");
-                    break;
             }
         }
     }

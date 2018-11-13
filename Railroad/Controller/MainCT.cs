@@ -25,5 +25,9 @@ namespace Railroad.Controller
             member.memberpw = pw;
             member.membername = membername;
         }
+        public void setTrainData()
+        {
+
+        }
     }
 }

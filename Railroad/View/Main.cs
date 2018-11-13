@@ -17,6 +17,7 @@ namespace Railroad.View
         public Main()
         {
             InitializeComponent();
+            this.CenterToScreen();
             mct = new MainCT();
         }
 
@@ -24,9 +25,14 @@ namespace Railroad.View
         {
             if (mct.Checknull() == true)
             {
-                Login login = new Login(mct);
+                Login login = new Login(this, mct);
                 login.Show();
             }
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+            mct.setTrainData();
         }
     }
 }
