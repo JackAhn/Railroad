@@ -46,11 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\AdminCT.cs" />
     <Compile Include="Controller\MainCT.cs" />
     <Compile Include="DAO\MemberDAO.cs" />
     <Compile Include="DAO\TrainDAO.cs" />
     <Compile Include="Model\LoginMember.cs" />
     <Compile Include="Model\Member.cs" />
+    <Compile Include="Model\Station.cs" />
     <Compile Include="Model\Train.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

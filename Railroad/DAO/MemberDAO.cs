@@ -21,7 +21,7 @@ namespace Railroad.DAO
         {
             con = new MySqlConnection(url);
             con.Open();
-               command = con.CreateCommand();
+            command = con.CreateCommand();
             initDB(); //db 초기화
         }
 
@@ -137,6 +137,11 @@ namespace Railroad.DAO
                 MessageBox.Show(e.Message);
                 return null;
             }
+        }
+
+        public void closeConnect()
+        {
+            con.Close();
         }
     }
 }

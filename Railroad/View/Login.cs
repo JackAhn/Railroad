@@ -60,5 +60,10 @@ namespace Railroad
                 return;
             }
         }
+
+        private void Login_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            memberDAO.closeConnect();
+        }
     }
 }
