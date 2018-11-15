@@ -29,14 +29,33 @@ namespace Railroad.View
         {
             if (mct.Checknull() == true)
             {
+                this.logbtn.Text = "로그인";
                 Login login = new Login(this, mct);
                 login.Show();
+            }
+            else
+            {
+                this.logbtn.Text = "로그아웃";
             }
         }
 
         private void Main_Load(object sender, EventArgs e)
         {
-            mct.setTrainData(trainDAO);
+            mct.setTrainData(this, trainDAO);
+        }
+
+        private void logbtn_Click(object sender, EventArgs e)
+        {
+            if (this.logbtn.Text.Equals("로그인"))
+            {
+                Login login = new Login(this, mct);
+                login.Show();
+            }
+            else
+            {
+                MessageBox.Show("로그아웃이 완료되었습니다.", "로그아웃 완료", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.logbtn.Text = "로그인";
+            }
         }
     }
 }

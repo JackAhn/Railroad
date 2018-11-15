@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Railroad.Model;
 using Railroad.DAO;
+using Railroad.View;
 
 namespace Railroad.Controller
 {
@@ -25,7 +26,7 @@ namespace Railroad.Controller
             member.memberpw = pw;
             member.membername = membername;
         }
-        public void setTrainData(TrainDAO trainDAO)
+        public void setTrainData(Main main, TrainDAO trainDAO)
         {
 
         }

@@ -8,5 +8,6 @@ namespace Railroad.Model
 {
     public class Train
     {
+
     }
 }

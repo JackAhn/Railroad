@@ -22,7 +22,6 @@ namespace Railroad.DAO
             con = new MySqlConnection(url);
             con.Open();
             command = con.CreateCommand();
-            initDB(); //db 초기화
         }
 
         public static MemberDAO getInstance()
@@ -48,33 +47,6 @@ namespace Railroad.DAO
             }
         }
 
-        private void initDB()
-        {
-            try
-            {
-                try
-                {
-                    executeNonQuery("drop database railroad");
-                }catch(MySqlException e)
-                {
-                    MessageBox.Show(e.Message);
-                }
-
-                executeNonQuery("create database railroad");
-                executeNonQuery("use railroad");
-                executeNonQuery("create table member(memberno int primary key not null auto_increment, membername varchar(20), memberid varchar(20), " +
-                    "memberpw varchar(30), memberphone varchar(40))");
-                executeNonQuery("create table train(trainno int primary key not null, departure varchar(20), starttime date, destination varchar(20), stoptime date," +
-                    " seat int)");
-                executeNonQuery("create table ticket(ticketno int, memberno int, membername varchar(15), trainno int, departure varchar(20), destination varchar(20), time date, " +
-                    "foreign key(memberno) references member(memberno) on update cascade on delete cascade, foreign key(trainno) references train(trainno) on delete cascade)");
-            }
-            catch (MySqlException e)
-            {
-                MessageBox.Show(e.Message);
-            }
-        }
-
         public bool isDuplicate(string id)
         {
             try
@@ -96,7 +68,7 @@ namespace Railroad.DAO
 
         public int insertMember(Member member)
         {
-            return executeNonQuery("insert into member(memberno, membername, memberid, memberpw, memberphone) values" +
+            return executeNonQuery("insert into member values" +
                    "('0', '" + member.Mname + "', '" + member.Mid + "', '" + member.Mpw + "', '" + member.Mphone + "')");
         }
 
