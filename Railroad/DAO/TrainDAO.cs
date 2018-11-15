@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Railroad.Model;
 
 namespace Railroad.DAO
 {
@@ -42,6 +43,39 @@ namespace Railroad.DAO
                 MessageBox.Show(e.Message);
                 return 0;
             }
+        }
+
+        public object[,] getTrainData()
+        {
+            DateTime datetime = DateTime.Now;
+            string now = datetime.ToString("yyyy-MM-dd")+" 00:00:00";
+            string after = datetime.AddDays(5).ToString("yyyy-MM-dd HH:mm:ss");
+
+            command.CommandText = "select count(*) from train where starttime>='" + now + "' and stoptime<='" + after + "'";
+            reader = command.ExecuteReader();
+            object [,] data= new object[0,0];
+            if (reader.Read())
+            {
+                data = new object[reader.GetInt32(0), 6];
+            }
+
+            reader.Close();
+
+            command.CommandText = "select * from train where starttime>='" + now + "' and stoptime<='" + after + "'";
+            reader = command.ExecuteReader();
+            int a = 0;
+            while (reader.Read())
+            {
+                data[a,0] = reader.GetInt32(0);
+                data[a,1] = reader.GetString(1);
+                data[a,2] = reader.GetDateTime(2);
+                data[a,3] = reader.GetString(3);
+                data[a,4] = reader.GetDateTime(4);
+                data[a,5] = reader.GetInt32(5);
+                a++;
+            }
+            reader.Close();
+            return data;
         }
 
         private void initDB()

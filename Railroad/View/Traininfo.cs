@@ -31,5 +31,10 @@ namespace Railroad.View
         {
             set { this.destination.Text = value; }
         }
+
+        private void departure_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

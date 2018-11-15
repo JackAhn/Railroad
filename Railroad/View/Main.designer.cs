@@ -46,7 +46,7 @@
             // 
             // logbtn
             // 
-            this.logbtn.Location = new System.Drawing.Point(376, 563);
+            this.logbtn.Location = new System.Drawing.Point(424, 562);
             this.logbtn.Name = "logbtn";
             this.logbtn.Size = new System.Drawing.Size(95, 28);
             this.logbtn.TabIndex = 1;
@@ -55,16 +55,16 @@
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 62);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(16, 102);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(464, 495);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(503, 454);
             this.flowLayoutPanel1.TabIndex = 2;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("굴림", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label2.Location = new System.Drawing.Point(164, 17);
+            this.label2.Location = new System.Drawing.Point(200, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(154, 32);
             this.label2.TabIndex = 3;
@@ -74,7 +74,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(480, 598);
+            this.ClientSize = new System.Drawing.Size(531, 598);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.logbtn);

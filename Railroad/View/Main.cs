@@ -9,13 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Railroad.Controller;
 using Railroad.DAO;
+using Railroad.Model;
 
 namespace Railroad.View
 {
     public partial class Main : Form
     {
         private MainCT mct;
+        private Traininfo[] traininfo;
         private TrainDAO trainDAO;
+        private static List<Train> trainData = new List<Train>();
 
         public Main()
         {
@@ -41,7 +44,18 @@ namespace Railroad.View
 
         private void Main_Load(object sender, EventArgs e)
         {
-            mct.setTrainData(this, trainDAO);
+            mct.setTrainData(trainData, trainDAO);
+            traininfo = new Traininfo[trainData.Count];
+            for(int i = 0; i < traininfo.Length; i++)
+            {
+                traininfo[i] = new Traininfo();
+                flowLayoutPanel1.Controls.Add(traininfo[i]);
+                traininfo[i].settrainNo = trainData[i].trainNo.ToString();
+                traininfo[i].setdeparture = trainData[i].departure.ToString() + "\n" + trainData[i].starttime.ToString("yyyy-MM-dd HH:mm");
+                traininfo[i].setdestination = trainData[i].destination.ToString() + "\n" + trainData[i].stoptime.ToString("yyyy-MM-dd HH:mm");
+                traininfo[i].ticketbtn.Name = i + "";
+                traininfo[i].ticketbtn.Click += new EventHandler(ticketbtn_click);
+            }
         }
 
         private void logbtn_Click(object sender, EventArgs e)
@@ -56,6 +70,11 @@ namespace Railroad.View
                 MessageBox.Show("로그아웃이 완료되었습니다.", "로그아웃 완료", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.logbtn.Text = "로그인";
             }
+        }
+
+        private void ticketbtn_click(object sender, EventArgs e) //예매하기 버튼
+        {
+
         }
     }
 }

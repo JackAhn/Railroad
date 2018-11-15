@@ -26,9 +26,21 @@ namespace Railroad.Controller
             member.memberpw = pw;
             member.membername = membername;
         }
-        public void setTrainData(Main main, TrainDAO trainDAO)
+        public void setTrainData(List<Train> trainData, TrainDAO trainDAO)
         {
+            object[,] data = trainDAO.getTrainData();
 
+            for(int i = 0; i < data.GetLength(0); i++)
+            {
+                Train train = new Train();
+                train.trainNo = (int)data[i, 0];
+                train.departure = (string)data[i, 1];
+                train.starttime = (DateTime)data[i, 2];
+                train.destination = (string)data[i, 3];
+                train.stoptime = (DateTime)data[i, 4];
+                train.seat = (int)data[i, 5];
+                trainData.Add(train);
+            }
         }
     }
 }

@@ -8,6 +8,11 @@ namespace Railroad.Model
 {
     public class Train
     {
-
+        public int trainNo { get; set; }
+        public string departure { get; set; }
+        public DateTime starttime { get; set; }
+        public string destination { get; set; }
+        public DateTime stoptime { get; set; }
+        public int seat { get; set; }
     }
 }

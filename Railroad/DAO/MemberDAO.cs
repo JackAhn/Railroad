@@ -56,8 +56,10 @@ namespace Railroad.DAO
                 reader = command.ExecuteReader();
                 if (reader.Read())
                 {
+                    reader.Close();
                     return false;
                 }
+                reader.Close();
                 return true;
             } catch(MySqlException e)
             {
@@ -81,8 +83,11 @@ namespace Railroad.DAO
                 reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    return reader.GetString("membername");
+                    string data = reader.GetString("membername");
+                    reader.Close();
+                    return data;
                 }
+                reader.Close();
                 return null;
             }catch(MySqlException e)
             {
@@ -100,8 +105,11 @@ namespace Railroad.DAO
                 reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    return reader.GetString("memberno");
+                    string data = reader.GetString("memberno");
+                    reader.Close();
+                    return data;
                 }
+                reader.Close();
                 return null;
             }
             catch (MySqlException e)
