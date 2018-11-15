@@ -67,7 +67,7 @@ namespace Railroad.View
             }
             else
             {
-                MessageBox.Show("로그아웃이 완료되었습니다.", "로그아웃 완료", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("로그아웃이 완료되었습니다.", "로그아웃 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.logbtn.Text = "로그인";
             }
         }

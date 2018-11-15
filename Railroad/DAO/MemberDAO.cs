@@ -22,6 +22,7 @@ namespace Railroad.DAO
             con = new MySqlConnection(url);
             con.Open();
             command = con.CreateCommand();
+            executeNonQuery("use railroad");
         }
 
         public static MemberDAO getInstance()
@@ -42,7 +43,7 @@ namespace Railroad.DAO
             }
             catch (MySqlException e)
             {
-                MessageBox.Show(e.Message);
+                //MessageBox.Show(e.Message);
                 return 0;
             }
         }
@@ -91,7 +92,7 @@ namespace Railroad.DAO
                 return null;
             }catch(MySqlException e)
             {
-                MessageBox.Show(e.Message);
+                //MessageBox.Show(e.Message);
                 return null;
             }
         }
@@ -114,7 +115,7 @@ namespace Railroad.DAO
             }
             catch (MySqlException e)
             {
-                MessageBox.Show(e.Message);
+                //MessageBox.Show(e.Message);
                 return null;
             }
         }
