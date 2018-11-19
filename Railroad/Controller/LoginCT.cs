@@ -20,7 +20,8 @@ namespace Railroad.Controller
         public LoginCT(Main main)
         {
             this.main = main;
-            memberDAO = MemberDAO.getInstance();
+            memberDAO = new MemberDAO();
+            memberDAO = memberDAO.getInstance();
         }
 
         public void chkLogin(Login login, string text1, string text2)
@@ -59,9 +60,18 @@ namespace Railroad.Controller
 
         public bool Checknull()
         {
-            if (MainCT.member.membername == null)
+            if (MainCT.member == null)
                 return true;
             return false;
+        }
+
+        public void isClose()
+        {
+            //멤버 객체에 아무것도 없고 관리자 객체도 생성되지 않았다면
+            if (Checknull() == true && admin == null)
+            {
+                main.Close(); //메인 닫기
+            }
         }
 
         public void close()

@@ -16,8 +16,8 @@ namespace Railroad
     public partial class Login : Form
     {
         private Main main;
-        private Admin admin;
         private LoginCT loginCT;
+        private FindCT findCT;
 
         public Login(Main main)
         {
@@ -36,17 +36,19 @@ namespace Railroad
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            loginCT.chkLogin(this, this.textBox1.Text, this.textBox2.Text);
         }
 
         private void Login_FormClosing(object sender, FormClosingEventArgs e)
         {
             loginCT.close();
-            //멤버 객체에 아무것도 없고 관리자 객체도 생성되지 않았다면
-            if(loginCT.Checknull()==true && admin == null)
-            {
-                main.Close(); //메인 닫기
-            }
+            loginCT.isClose();
+        }
+
+        private void button3_Click(object sender, EventArgs e) //아이디&비번 찾기
+        {
+            findCT = new FindCT();
+            findCT.showUser();
         }
     }
 }

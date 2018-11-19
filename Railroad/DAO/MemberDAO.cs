@@ -15,7 +15,7 @@ namespace Railroad.DAO
         private MySqlConnection con;
         private MySqlDataReader reader;
         private MySqlCommand command;
-        private static MemberDAO instance;
+        private MemberDAO instance;
 
         public MemberDAO()
         {
@@ -25,7 +25,7 @@ namespace Railroad.DAO
             executeNonQuery("use railroad");
         }
 
-        public static MemberDAO getInstance()
+        public MemberDAO getInstance()
         {
             if (instance == null)
             {

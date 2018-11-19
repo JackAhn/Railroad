@@ -16,7 +16,7 @@ namespace Railroad.DAO
         private MySqlConnection con;
         private MySqlDataReader reader;
         private MySqlCommand command;
-        private static TrainDAO instance;
+        private TrainDAO instance;
 
         public TrainDAO()
         {
@@ -27,7 +27,7 @@ namespace Railroad.DAO
             executeNonQuery("use railroad");
         }
 
-        public static TrainDAO getInstance()
+        public TrainDAO getInstance()
         {
             if (instance == null)
                 instance = new TrainDAO();
@@ -52,8 +52,7 @@ namespace Railroad.DAO
         {
             //처음 실행 시 기본 DB 데이터 추가
             //executeNonQuery("drop database railroad");
-            if (executeNonQuery("create database railroad") == 0)
-                return;
+            executeNonQuery("create database railroad");
             executeNonQuery("use railroad");
             executeNonQuery("create table member(memberno int primary key not null auto_increment, membername varchar(20), memberid varchar(20), " +
                     "memberpw varchar(30), memberphone varchar(40))");
@@ -62,6 +61,8 @@ namespace Railroad.DAO
             executeNonQuery("create table ticket(ticketno int, memberno int, membername varchar(15), trainno int, departure varchar(20), destination varchar(20), time datetime, " +
                     "foreign key(memberno) references member(memberno) on update cascade on delete cascade, foreign key(trainno) references train(trainno) on delete cascade)");
             executeNonQuery("create table destination(desno int primary key not null auto_increment, desname varchar(20))");
+            executeNonQuery("delete from train");
+            executeNonQuery("delete from destination");
             executeNonQuery("insert into train values ('1000', '서울','"+DateTime.Now.ToString("yyyy-MM-dd")+" 12:00:00', '부산', '" + DateTime.Now.ToString("yyyy-MM-dd") +" 15:00:00', '100')");
             executeNonQuery("insert into destination values ('0', '부산')");
             executeNonQuery("insert into destination values ('0', '서울')");
@@ -144,7 +145,7 @@ namespace Railroad.DAO
 
         public int addTrain(string memno, string memname, int trainno, string start, string end, string starttime, string endttime) //기차 추가
         {
-
+            return 0;
         }
 
         public void closeConnect()

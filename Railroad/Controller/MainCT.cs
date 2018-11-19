@@ -17,8 +17,10 @@ namespace Railroad.Controller
 
         public MainCT()
         {
-            trainDAO = TrainDAO.getInstance();
-            ticketDAO = TicketDAO.getInstance();
+            trainDAO = new TrainDAO();
+            ticketDAO = new TicketDAO();
+            trainDAO = trainDAO.getInstance();
+            ticketDAO = ticketDAO.getInstance();
         }
 
         public void setTrainData(List<Train> trainData, string now, string after)
@@ -55,6 +57,13 @@ namespace Railroad.Controller
         {
             member = null;
         }
+        public bool Checknull()
+        {
+            if (member.membername == null)
+                return true;
+            return false;
+        }
+
         public void close()
         {
             trainDAO.closeConnect();

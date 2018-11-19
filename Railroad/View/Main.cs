@@ -29,7 +29,7 @@ namespace Railroad.View
         private void Main_Shown(object sender, EventArgs e)
         {
             this.Visible = false;
-            Login login = new Login(this, mct);
+            Login login = new Login(this);
             login.Show();
         }
 
@@ -54,6 +54,7 @@ namespace Railroad.View
             MessageBox.Show("로그아웃이 완료되었습니다.", "로그아웃 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
             mct.setmemberNull();
             this.logbtn.Text = "로그인";
+            this.Hide();
             Login login = new Login(this);
             login.Show();
         }
@@ -62,15 +63,18 @@ namespace Railroad.View
         {
             Button b = sender as Button;
             int bct = int.Parse(b.Name);
+
             if (mct.Checknull() == true)
             {
                 MessageBox.Show("로그인을 먼저 해 주세요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             Getcount getcount = new Getcount();
             getcount.ShowDialog();
             int data = int.Parse(getcount.personCount);
             getcount.Close();
+
             string memno = MainCT.member.memberid;
             string memname = MainCT.member.membername;
             int trainno = trainData[bct].trainNo;

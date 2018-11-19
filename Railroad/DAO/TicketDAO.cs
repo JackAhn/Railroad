@@ -13,7 +13,7 @@ namespace Railroad.DAO
         private MySqlConnection con;
         private MySqlDataReader reader;
         private MySqlCommand command;
-        private static TicketDAO instance;
+        private TicketDAO instance;
 
         public TicketDAO()
         {
@@ -23,7 +23,7 @@ namespace Railroad.DAO
             executeNonQuery("use railroad");
         }
 
-        public static TicketDAO getInstance()
+        public TicketDAO getInstance()
         {
             if (instance == null)
                 instance = new TicketDAO();
@@ -46,7 +46,7 @@ namespace Railroad.DAO
 
         public int addTicket(string memno, string memname, int trainno, string start, string end, string starttime, string endttime)
         {
-
+            return 0;
         }
 
         public void closeConnect()

@@ -31,7 +31,7 @@ namespace Railroad.View
         private void Admin_FormClosing(object sender, FormClosingEventArgs e)
         {
             adminCT.close();
-            Login login = new Login(main, mainCT);
+            Login login = new Login(main);
             login.Show();
         }
 

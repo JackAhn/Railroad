@@ -15,7 +15,8 @@ namespace Railroad.Controller
 
         public MemberCT()
         {
-            memberDAO = MemberDAO.getInstance();
+            memberDAO = new MemberDAO();
+            memberDAO = memberDAO.getInstance();
         }
 
         public void addMember(Member member, string[] userData)

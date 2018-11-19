@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\AdminCT.cs" />
+    <Compile Include="Controller\FindCT.cs" />
     <Compile Include="Controller\LoginCT.cs" />
     <Compile Include="Controller\MainCT.cs" />
     <Compile Include="Controller\MemberCT.cs" />
@@ -64,6 +65,12 @@
     </Compile>
     <Compile Include="View\Admin.Designer.cs">
       <DependentUpon>Admin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Finduser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Finduser.Designer.cs">
+      <DependentUpon>Finduser.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Getcount.cs">
       <SubType>Form</SubType>
@@ -112,6 +119,9 @@
     </Compile>
     <EmbeddedResource Include="View\Admin.resx">
       <DependentUpon>Admin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Finduser.resx">
+      <DependentUpon>Finduser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Getcount.resx">
       <DependentUpon>Getcount.cs</DependentUpon>

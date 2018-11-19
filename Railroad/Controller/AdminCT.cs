@@ -15,7 +15,8 @@ namespace Railroad.Controller
 
         public AdminCT()
         {
-            trainDAO = TrainDAO.getInstance();
+            trainDAO = new TrainDAO();
+            trainDAO = trainDAO.getInstance();
         }
 
         public List<string> get(string query)
