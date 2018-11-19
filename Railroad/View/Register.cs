@@ -55,15 +55,15 @@ namespace Railroad.View
             {
                 if (memberCT.addMember(member) == 1)
                 {
-                    MessageBox.Show("회원가입 성공");
+                    MessageBox.Show("회원가입 성공", "회원가입", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.Close();
                 }
                 else
-                    MessageBox.Show("회원가입 실패");
+                    MessageBox.Show("회원가입 실패", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else //중복이 있다면
             {
-                MessageBox.Show("아이디 중복이 있습니다.");
+                MessageBox.Show("아이디 중복이 있습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

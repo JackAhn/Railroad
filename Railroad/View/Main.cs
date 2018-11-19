@@ -30,23 +30,11 @@ namespace Railroad.View
         {
             this.Visible = false;
             Login login = new Login(this);
-            login.Show();
         }
 
         private void Main_Load(object sender, EventArgs e)
         {
-            DateTime datetime = DateTime.Now;
-            string now = datetime.ToString("yyyy-MM-dd") + " 00:00:00";
-            string after = datetime.AddDays(5).ToString("yyyy-MM-dd HH:mm:ss");
-            this.label3.Text = now + " ~ " + after + " 까지의 기차 정보"; 
-            mct.setTrainData(trainData, now, after);
-            traininfo = new Traininfo[trainData.Count];
-            for (int i = 0; i < traininfo.Length; i++)
-            {
-                traininfo[i] = new Traininfo();
-                mct.setTrainInfo(this, i, traininfo[i], trainData);
-                traininfo[i].ticketbtn.Click += new EventHandler(ticketbtn_click);
-            }
+            updateView();
         }
 
         private void logbtn_Click(object sender, EventArgs e)
@@ -63,19 +51,26 @@ namespace Railroad.View
         {
             Button b = sender as Button;
             int bct = int.Parse(b.Name);
+            int count = traininfo[bct].seatct;
 
-            if (mct.Checknull() == true)
+            if (mct.Checknull())
             {
                 MessageBox.Show("로그인을 먼저 해 주세요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            Getcount getcount = new Getcount();
+            if (mct.Checkseat(count))
+            {
+                MessageBox.Show("위 기차는 매진되었습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Getcount getcount = new Getcount(count);
             getcount.ShowDialog();
             int data = int.Parse(getcount.personCount);
             getcount.Close();
 
-            string memno = MainCT.member.memberid;
+            string memno = MainCT.member.memberno.ToString();
             string memname = MainCT.member.membername;
             int trainno = trainData[bct].trainNo;
             string depart = trainData[bct].departure;
@@ -90,12 +85,33 @@ namespace Railroad.View
                     return;
                 }
             }
-            MessageBox.Show("구매가 완료되었습니다.\n자세한 티켓 정보는 구매정보 메뉴를 이용해주세요.", "완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("구매가 완료되었습니다.\n티켓이 출력됩니다.", "완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            updateView();
+        }
+
+        private void updateView()
+        {
+            flowLayoutPanel1.Controls.Clear(); //패널 내 아이템 클리어
+            trainData.Clear(); //리스트 클리어
+            DateTime datetime = DateTime.Now;
+            string now = datetime.ToString("yyyy-MM-dd HH:mm:ss");
+            string after = datetime.AddDays(5).ToString("yyyy-MM-dd") + " 23:59:59";
+            this.label3.Text = now + " ~ " + after + " 까지의 기차 정보";
+            mct.setTrainData(trainData, now, after);
+            traininfo = new Traininfo[trainData.Count];
+            for (int i = 0; i < traininfo.Length; i++)
+            {
+                traininfo[i] = new Traininfo();
+                mct.setTrainInfo(this, i, traininfo[i], trainData);
+                traininfo[i].ticketbtn.Click += new EventHandler(ticketbtn_click);
+            }
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             mct.close();
         }
+
+
     }
 }

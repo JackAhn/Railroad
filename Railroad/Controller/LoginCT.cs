@@ -37,8 +37,10 @@ namespace Railroad.Controller
             string membername = memberDAO.chkLogin(text1, text2); //회원 존재 유무에 따라 null 또는 회원의 이름 반환
             if (membername != null)
             {
+                MainCT.member = new LoginMember();
                 setMemberdata(text1, text2, membername, memberDAO); //모델에 데이터 저장
                 MessageBox.Show(membername + "님 환영합니다.", "로그인 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                main.label1.Text = membername+"님 환영합니다.";
                 main.Visible = true;
                 login.Close();
                 return;

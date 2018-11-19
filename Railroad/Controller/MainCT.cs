@@ -11,7 +11,7 @@ namespace Railroad.Controller
 {
     public class MainCT
     {
-        public static LoginMember member = new LoginMember(); //로그인한 회원의 데이터 저장을 위한 객체 생성
+        public static LoginMember member; //로그인한 회원의 데이터 저장을 위한 객체 생성
         private TrainDAO trainDAO;
         private TicketDAO ticketDAO;
 
@@ -45,7 +45,9 @@ namespace Railroad.Controller
             traininfo.settrainNo = trainData[i].trainNo.ToString();
             traininfo.setdeparture = trainData[i].departure.ToString() + "\n" + trainData[i].starttime.ToString("yyyy-MM-dd HH:mm");
             traininfo.setdestination = trainData[i].destination.ToString() + "\n" + trainData[i].stoptime.ToString("yyyy-MM-dd HH:mm");
+            traininfo.setseat = trainData[i].seat.ToString();
             traininfo.ticketbtn.Name = i + "";
+            main.flowLayoutPanel1.Controls.Add(traininfo);
         }
 
         public int setTicketData(string memno, string memname, int trainno, string depart, string destination, string start, string stop)
@@ -63,6 +65,16 @@ namespace Railroad.Controller
                 return true;
             return false;
         }
+
+        public bool Checkseat(int count)
+        {
+            if (count == 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
 
         public void close()
         {

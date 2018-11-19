@@ -51,22 +51,44 @@ namespace Railroad.DAO
         private void initDB()
         {
             //처음 실행 시 기본 DB 데이터 추가
-            //executeNonQuery("drop database railroad");
-            executeNonQuery("create database railroad");
-            executeNonQuery("use railroad");
-            executeNonQuery("create table member(memberno int primary key not null auto_increment, membername varchar(20), memberid varchar(20), " +
+            executeNonQuery("drop database railroad");
+            if(executeNonQuery("create database railroad") == 1)
+            {
+                executeNonQuery("use railroad");
+                executeNonQuery("create table destination(desno int primary key not null auto_increment, desname varchar(20))");
+                executeNonQuery("insert into destination values ('0', '부산')");
+                executeNonQuery("insert into destination values ('0', '서울')");
+                executeNonQuery("create table member(memberno int primary key not null auto_increment, membername varchar(20), memberid varchar(20), " +
                     "memberpw varchar(30), memberphone varchar(40))");
-            executeNonQuery("create table train(trainno int primary key not null, departure varchar(20), starttime datetime, destination varchar(20), stoptime datetime," +
+                executeNonQuery("create table train(trainno int primary key not null, departure varchar(20), starttime datetime, destination varchar(20), stoptime datetime," +
                     " seat int)");
-            executeNonQuery("create table ticket(ticketno int, memberno int, membername varchar(15), trainno int, departure varchar(20), destination varchar(20), time datetime, " +
+                executeNonQuery("create table ticket(ticketno int, memberno int, membername varchar(15), trainno int, departure varchar(20), destination varchar(20), starttime datetime, stoptime datetime, " +
                     "foreign key(memberno) references member(memberno) on update cascade on delete cascade, foreign key(trainno) references train(trainno) on delete cascade)");
-            executeNonQuery("create table destination(desno int primary key not null auto_increment, desname varchar(20))");
-            executeNonQuery("delete from train");
-            executeNonQuery("delete from destination");
-            executeNonQuery("insert into train values ('1000', '서울','"+DateTime.Now.ToString("yyyy-MM-dd")+" 12:00:00', '부산', '" + DateTime.Now.ToString("yyyy-MM-dd") +" 15:00:00', '100')");
-            executeNonQuery("insert into destination values ('0', '부산')");
-            executeNonQuery("insert into destination values ('0', '서울')");
-            executeNonQuery("SET SQL_SAFE_UPDATES 0");
+                executeNonQuery("SET SQL_SAFE_UPDATES 0");
+            }
+            else
+            {
+                executeNonQuery("use railroad");
+            }
+            if (!chkTrainData()) //5일 후까지의 기차 데이터가 없다면
+            {
+                //새로 추가
+                executeNonQuery("insert into train values ('1000', '서울','"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+"', '부산', '" + DateTime.Now.AddHours(2).ToString("yyyy-MM-dd HH:mm:ss") +"', '100')");
+            }
+        }
+
+        private bool chkTrainData()
+        {
+            string query = "select * from train where starttime >='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' and stoptime<='" + DateTime.Now.AddDays(5).ToString("yyyy-MM-dd") + " 23:59:59'";
+            command.CommandText = query;
+            reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                reader.Close();
+                return true;
+            }
+            reader.Close();
+            return false;
         }
 
         public object[,] getTrainData(string now, string after)
@@ -143,9 +165,59 @@ namespace Railroad.DAO
             }
         }
 
-        public int addTrain(string memno, string memname, int trainno, string start, string end, string starttime, string endttime) //기차 추가
+        public bool isTrainexist(string trainno)
         {
-            return 0;
+            try
+            {
+                command.CommandText = "select trainno from train where trainno='" + trainno + "'";
+                reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    reader.Close();
+                    return true;
+                }
+                reader.Close();
+                return false;
+
+            }
+            catch (MySqlException e)
+            {
+                //MessageBox.Show(e.Message);
+                return false;
+            }
+        }
+
+        public bool isTimeDupliate(string starttime, string stoptime)
+        {
+            try
+            {
+                command.CommandText = "select * from train where starttime>='" + starttime + "' and stoptime<='" + stoptime + "'";
+                reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    reader.Close();
+                    return true;
+                }
+                reader.Close();
+                return false;
+            } catch(MySqlException e)
+            {
+                return false;
+            }
+        }
+
+        public int addTrain(string trainno, string departure, string starttime, string destination, string stoptime, string seat) //기차 추가
+        {
+            try
+            {
+                string query = "insert into train values('" + trainno + "', '" + departure + "', '" + starttime + "', '" + destination + "', '" + stoptime + "', '" + seat + "')";
+                return executeNonQuery(query);
+            }
+            catch (MySqlException e)
+            {
+                //MessageBox.Show(e.Message);
+                return 0;
+            }
         }
 
         public void closeConnect()

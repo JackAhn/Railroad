@@ -120,6 +120,49 @@ namespace Railroad.DAO
             }
         }
 
+        public string findMemberid(string name, string phone)
+        {
+            try
+            {
+                string query = "select memberid from member where membername='" + name + "' and memberphone='" + phone + "'";
+                command.CommandText = query;
+                reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    string data = reader.GetString(0);
+                    reader.Close();
+                    return data;
+                }
+                reader.Close();
+                return null;
+            } catch (MySqlException e)
+            {
+                return null;
+            }
+        }
+
+        public string findMemberpw(string name, string id, string phone)
+        {
+            try
+            {
+                string query = "select memberpw from member where membername='" + name + "' and memberid='" + id + "' and memberphone='" + phone + "'";
+                command.CommandText = query;
+                reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    string data = reader.GetString(0);
+                    reader.Close();
+                    return data;
+                }
+                reader.Close();
+                return null;
+            }
+            catch (MySqlException e)
+            {
+                return null;
+            }
+        }
+
         public void closeConnect()
         {
             con.Close();

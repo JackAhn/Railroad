@@ -73,7 +73,7 @@ namespace Railroad.View
 
         private void radioButton1_Click(object sender, EventArgs e)
         {
-            List<string> data = adminCT.get("select desname from destination order by desno asc");
+            List<string> data = adminCT.get("select desname from destination order by desno asc"); //get() = 목적지를 가져옴
             setcomboBox(data,0);
         }
 
@@ -110,7 +110,7 @@ namespace Railroad.View
             int ind = data.IndexOf(this.comboBox3.SelectedItem.ToString());
             data.Insert(ind + 1, this.textBox13.Text);
 
-            if (adminCT.set(data) == 1)
+            if (adminCT.set(data) == 1) //set() = 목적지 등록
             {
                 MessageBox.Show("등록이 완료되었습니다.\n자동 새로고침이 진행됩니다.", "등록 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -147,20 +147,65 @@ namespace Railroad.View
 
         private void button1_Click(object sender, EventArgs e)
         {
+
+            //에러 컨트롤
             foreach (Control ct in splitContainer1.Panel1.Controls.OfType<TextBox>())
             {
+                int a = 0;
+                bool result = int.TryParse(ct.Text, out a);
                 if (ct.Text.Equals(""))
                 {
                     MessageBox.Show("공백이 있는지 확인해주세요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+                if (!result)
+                {
+                    MessageBox.Show("숫자로 입력해주세요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
             if(this.comboBox1.SelectedIndex==-1 || this.comboBox2.SelectedIndex == -1)
             {
-                MessageBox.Show("공백이 있는지 확인해주세요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("출발역 또는 도착역을 선택해주세요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
+
+            string trainno = this.textBox1.Text;
+            if (adminCT.chktrainNo(trainno))
+            {
+                MessageBox.Show("이미 등록된 기차번호입니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string departure = this.comboBox1.Text;
+            string starttime = this.textBox2.Text + "-" + this.textBox3.Text + "-" + this.textBox4.Text + " " + this.textBox5.Text + ":" + this.textBox6.Text;
+            string destination = this.comboBox2.Text;
+            string stoptime = this.textBox7.Text + "-" + this.textBox8.Text + "-" + this.textBox9.Text + " " + this.textBox10.Text + ":" + this.textBox11.Text;
+            string seat = this.textBox12.Text;
+
+            if(!adminCT.chkTime(starttime, stoptime))
+            {
+                MessageBox.Show("출발시간이 도착시간이랑 같거나 도착시간보다 늦으면 안 됩니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+
+            if(adminCT.chkDuplicate(starttime, stoptime))
+            {
+                MessageBox.Show("이 시간 사이에 운행하는 기차가 있습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if(adminCT.insertTrain(trainno, departure, starttime, destination, stoptime, seat) == 1)
+            {
+                MessageBox.Show("등록되었습니다.", "등록 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                afterRegis();
+            }
+            else
+            {
+                MessageBox.Show("에러 발생", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

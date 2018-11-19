@@ -32,6 +32,16 @@ namespace Railroad.View
             set { this.destination.Text = value; }
         }
 
+        public string setseat
+        {
+            set { this.seat.Text = value; }
+        }
+
+        public int seatct
+        {
+            get { return int.Parse(this.seat.Text); }
+        }
+
         private void departure_Click(object sender, EventArgs e)
         {
 

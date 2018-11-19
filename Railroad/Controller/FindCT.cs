@@ -24,5 +24,20 @@ namespace Railroad.Controller
             Finduser user = new Finduser(this);
             user.Show();
         }
+
+        public string getID(string name, string phoneno)
+        {
+            return memberDAO.findMemberid(name, phoneno);
+        }
+
+        public string getPW(string name, string id, string phoneno)
+        {
+            return memberDAO.findMemberpw(name, id, phoneno);
+        }
+
+        public void close()
+        {
+            memberDAO.closeConnect();
+        }
     }
 }

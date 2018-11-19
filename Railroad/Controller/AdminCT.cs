@@ -29,6 +29,32 @@ namespace Railroad.Controller
             return trainDAO.setStation(data);
         }
 
+        public bool chktrainNo(string trainno)
+        {
+            return trainDAO.isTrainexist(trainno);
+        }
+
+        public int insertTrain(string trainno, string departure, string starttime, string destination, string stoptime, string seat)
+        {
+            return trainDAO.addTrain(trainno, departure, starttime, destination, stoptime, seat);
+        }
+
+        public bool chkDuplicate(string starttime, string stoptime)
+        {
+            return trainDAO.isTimeDupliate(starttime, stoptime);
+        }
+
+        public bool chkTime(string starttime, string stoptime)
+        {
+            DateTime parseStart = DateTime.Parse(starttime);
+            DateTime parseEnd = DateTime.Parse(stoptime);
+            int result = DateTime.Compare(parseStart, parseEnd);
+            if (result >= 0)
+                return false;
+            else
+                return true;
+        }
+
         public void close()
         {
             trainDAO.closeConnect();

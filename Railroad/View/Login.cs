@@ -26,6 +26,7 @@ namespace Railroad
             this.CenterToScreen();
             this.textBox2.PasswordChar = '＊';
             loginCT = new LoginCT(main);
+            this.Show();
         }
 
         private void button2_Click(object sender, EventArgs e)

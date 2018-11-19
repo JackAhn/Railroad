@@ -69,7 +69,6 @@
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.label19 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -134,7 +133,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(209, 9);
+            this.button3.Location = new System.Drawing.Point(292, 9);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(67, 28);
             this.button3.TabIndex = 7;
@@ -478,7 +477,6 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.button4);
             this.splitContainer1.Panel2.Controls.Add(this.button3);
             this.splitContainer1.Panel2.Controls.Add(this.button2);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
@@ -489,16 +487,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(786, 343);
             this.splitContainer1.SplitterDistance = 410;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(282, 9);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(77, 28);
-            this.button4.TabIndex = 7;
-            this.button4.Text = "기차 리스트";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button3_Click);
             // 
             // Admin
             // 
@@ -563,6 +551,5 @@
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Button button4;
     }
 }

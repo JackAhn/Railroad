@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Railroad.DAO
 {
@@ -39,14 +40,23 @@ namespace Railroad.DAO
             }
             catch (MySqlException e)
             {
-                //MessageBox.Show(e.Message);
+                MessageBox.Show(e.Message);
                 return 0;
             }
         }
 
-        public int addTicket(string memno, string memname, int trainno, string start, string end, string starttime, string endttime)
+        public int addTicket(string memno, string memname, int trainno, string start, string end, string starttime, string endtime)
         {
-            return 0;
+            try
+            {
+                string query = "insert into ticket values('0', '" + memno + "', '" + memname + "', '" + trainno + "', '" + start + "', '" + end + "', '" + starttime + "', '" + endtime + "')";
+                int data = executeNonQuery(query);
+                executeNonQuery("update train set seat=seat-1 where trainno='" + trainno + "'");
+                return data;
+            } catch(MySqlException e)
+            {
+                return 0;
+            }
         }
 
         public void closeConnect()
