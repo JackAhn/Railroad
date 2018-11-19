@@ -26,6 +26,7 @@ namespace Railroad.DAO
             initDB(); //db 초기화
             executeNonQuery("use railroad");
         }
+
         public static TrainDAO getInstance()
         {
             if (instance == null)
@@ -67,12 +68,8 @@ namespace Railroad.DAO
             executeNonQuery("SET SQL_SAFE_UPDATES 0");
         }
 
-        public object[,] getTrainData()
+        public object[,] getTrainData(string now, string after)
         {
-            DateTime datetime = DateTime.Now;
-            string now = datetime.ToString("yyyy-MM-dd")+" 00:00:00";
-            string after = datetime.AddDays(5).ToString("yyyy-MM-dd HH:mm:ss");
-
             command.CommandText = "select count(*) from train where starttime>='" + now + "' and stoptime<='" + after + "'";
             reader = command.ExecuteReader();
             object [,] data= new object[0,0];
@@ -108,9 +105,11 @@ namespace Railroad.DAO
                 command.CommandText = query;
                 reader = command.ExecuteReader();
                 List<string> data = new List<string>();
+                int a = 0;
                 while (reader.Read())
                 {
-                    data.Add(reader.GetString(0));
+                    data.Insert(a, reader.GetString(0));
+                    a++;
                 }
                 reader.Close();
                 return data;
@@ -120,7 +119,7 @@ namespace Railroad.DAO
             }
         }
 
-        public int setStation(List<string> data)
+        public int setStation(List<string> data) //역 추가
         {
             try
             {
@@ -141,6 +140,11 @@ namespace Railroad.DAO
                 //MessageBox.Show(e.Message);
                 return 0;
             }
+        }
+
+        public int addTrain(string memno, string memname, int trainno, string start, string end, string starttime, string endttime) //기차 추가
+        {
+
         }
 
         public void closeConnect()

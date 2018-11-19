@@ -12,23 +12,18 @@ namespace Railroad.Controller
     public class MainCT
     {
         public static LoginMember member = new LoginMember(); //로그인한 회원의 데이터 저장을 위한 객체 생성
+        private TrainDAO trainDAO;
+        private TicketDAO ticketDAO;
 
-        public bool Checknull()
+        public MainCT()
         {
-            if (member.membername == null)
-                return true;
-            return false;
+            trainDAO = TrainDAO.getInstance();
+            ticketDAO = TicketDAO.getInstance();
         }
-        public void setMemberdata(string id, string pw, string membername, MemberDAO memberDAO)
+
+        public void setTrainData(List<Train> trainData, string now, string after)
         {
-            member.memberno = int.Parse(memberDAO.findMemberno(id, pw));
-            member.memberid = id;
-            member.memberpw = pw;
-            member.membername = membername;
-        }
-        public void setTrainData(List<Train> trainData, TrainDAO trainDAO)
-        {
-            object[,] data = trainDAO.getTrainData();
+            object[,] data = trainDAO.getTrainData(now, after);
 
             for(int i = 0; i < data.GetLength(0); i++)
             {
@@ -41,6 +36,29 @@ namespace Railroad.Controller
                 train.seat = (int)data[i, 5];
                 trainData.Add(train);
             }
+        }
+
+        public void setTrainInfo(Main main, int i, Traininfo traininfo, List<Train> trainData)
+        {
+            traininfo.settrainNo = trainData[i].trainNo.ToString();
+            traininfo.setdeparture = trainData[i].departure.ToString() + "\n" + trainData[i].starttime.ToString("yyyy-MM-dd HH:mm");
+            traininfo.setdestination = trainData[i].destination.ToString() + "\n" + trainData[i].stoptime.ToString("yyyy-MM-dd HH:mm");
+            traininfo.ticketbtn.Name = i + "";
+        }
+
+        public int setTicketData(string memno, string memname, int trainno, string depart, string destination, string start, string stop)
+        {
+            return ticketDAO.addTicket(memno, memname, trainno, depart, destination, start, stop);
+        }
+
+        public void setmemberNull()
+        {
+            member = null;
+        }
+        public void close()
+        {
+            trainDAO.closeConnect();
+            ticketDAO.closeConnect();
         }
     }
 }

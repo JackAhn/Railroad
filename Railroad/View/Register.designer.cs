@@ -222,6 +222,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Register";
             this.Text = "회원가입";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Register_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

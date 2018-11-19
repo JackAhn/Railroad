@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Railroad.DAO;
 using Railroad.Model;
+using Railroad.Controller;
 
 namespace Railroad.View
 {
     public partial class Register : Form
     {
-        private MemberDAO memberDAO;
+        private MemberCT memberCT = new MemberCT();
         private string[] userData = new string[7];
         public Register()
         {
             InitializeComponent();
             this.CenterToScreen();
-            memberDAO = MemberDAO.getInstance();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -48,15 +48,12 @@ namespace Railroad.View
                 return;
             }
             Member member = new Member();
-            member.Mname = userData[0];
-            member.Mid = userData[1];
-            member.Mpw = userData[2];
-            member.Mphone = userData[4] + "-" + userData[5] + "-" + userData[6];
+            memberCT.addMember(member, userData);
 
             //아이디 중복 db에서 확인
-            if (memberDAO.isDuplicate(member.Mid)) //중복이 없다면
+            if (memberCT.chkDuplicate(member.Mid)) //중복이 없다면
             {
-                if (memberDAO.insertMember(member) == 1)
+                if (memberCT.addMember(member) == 1)
                 {
                     MessageBox.Show("회원가입 성공");
                     this.Close();
@@ -68,6 +65,11 @@ namespace Railroad.View
             {
                 MessageBox.Show("아이디 중복이 있습니다.");
             }
+        }
+
+        private void Register_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            memberCT.close();
         }
     }
 }

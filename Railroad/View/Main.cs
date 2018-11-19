@@ -17,7 +17,6 @@ namespace Railroad.View
     {
         private MainCT mct;
         private Traininfo[] traininfo;
-        private TrainDAO trainDAO;
         private static List<Train> trainData = new List<Train>();
 
         public Main()
@@ -25,56 +24,74 @@ namespace Railroad.View
             InitializeComponent();
             this.CenterToScreen();
             mct = new MainCT();
-            trainDAO = TrainDAO.getInstance();
         }
 
         private void Main_Shown(object sender, EventArgs e)
         {
-            if (mct.Checknull() == true)
-            {
-                this.logbtn.Text = "로그인";
-                Login login = new Login(this, mct);
-                login.Show();
-            }
-            else
-            {
-                this.logbtn.Text = "로그아웃";
-            }
+            this.Visible = false;
+            Login login = new Login(this, mct);
+            login.Show();
         }
 
         private void Main_Load(object sender, EventArgs e)
         {
-            mct.setTrainData(trainData, trainDAO);
+            DateTime datetime = DateTime.Now;
+            string now = datetime.ToString("yyyy-MM-dd") + " 00:00:00";
+            string after = datetime.AddDays(5).ToString("yyyy-MM-dd HH:mm:ss");
+            this.label3.Text = now + " ~ " + after + " 까지의 기차 정보"; 
+            mct.setTrainData(trainData, now, after);
             traininfo = new Traininfo[trainData.Count];
-            for(int i = 0; i < traininfo.Length; i++)
+            for (int i = 0; i < traininfo.Length; i++)
             {
                 traininfo[i] = new Traininfo();
-                flowLayoutPanel1.Controls.Add(traininfo[i]);
-                traininfo[i].settrainNo = trainData[i].trainNo.ToString();
-                traininfo[i].setdeparture = trainData[i].departure.ToString() + "\n" + trainData[i].starttime.ToString("yyyy-MM-dd HH:mm");
-                traininfo[i].setdestination = trainData[i].destination.ToString() + "\n" + trainData[i].stoptime.ToString("yyyy-MM-dd HH:mm");
-                traininfo[i].ticketbtn.Name = i + "";
+                mct.setTrainInfo(this, i, traininfo[i], trainData);
                 traininfo[i].ticketbtn.Click += new EventHandler(ticketbtn_click);
             }
         }
 
         private void logbtn_Click(object sender, EventArgs e)
         {
-            if (this.logbtn.Text.Equals("로그인"))
-            {
-                Login login = new Login(this, mct);
-                login.Show();
-            }
-            else
-            {
-                MessageBox.Show("로그아웃이 완료되었습니다.", "로그아웃 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.logbtn.Text = "로그인";
-            }
+            MessageBox.Show("로그아웃이 완료되었습니다.", "로그아웃 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            mct.setmemberNull();
+            this.logbtn.Text = "로그인";
+            Login login = new Login(this);
+            login.Show();
         }
 
         private void ticketbtn_click(object sender, EventArgs e) //예매하기 버튼
         {
+            Button b = sender as Button;
+            int bct = int.Parse(b.Name);
+            if (mct.Checknull() == true)
+            {
+                MessageBox.Show("로그인을 먼저 해 주세요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            Getcount getcount = new Getcount();
+            getcount.ShowDialog();
+            int data = int.Parse(getcount.personCount);
+            getcount.Close();
+            string memno = MainCT.member.memberid;
+            string memname = MainCT.member.membername;
+            int trainno = trainData[bct].trainNo;
+            string depart = trainData[bct].departure;
+            string destination = trainData[bct].destination;
+            string start = trainData[bct].starttime.ToString("yyyy-MM-dd HH:mm");
+            string stop = trainData[bct].stoptime.ToString("yyyy-MM-dd HH:mm");
+            for(int i = 0; i < data; i++)
+            {
+                if(mct.setTicketData(memno, memname, trainno, depart, destination, start, stop) != 1)
+                {
+                    MessageBox.Show("에러 발생", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            MessageBox.Show("구매가 완료되었습니다.\n자세한 티켓 정보는 구매정보 메뉴를 이용해주세요.", "완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
 
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            mct.close();
         }
     }
 }

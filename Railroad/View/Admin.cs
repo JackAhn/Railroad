@@ -16,7 +16,6 @@ namespace Railroad.View
     {
         private Main main;
         private AdminCT adminCT;
-        private TrainDAO trainDAO;
 
         public Admin(Main main)
         {
@@ -24,19 +23,21 @@ namespace Railroad.View
             this.CenterToScreen();
             this.main = main;
             adminCT = new AdminCT();
-            trainDAO = TrainDAO.getInstance();
+            this.comboBox1.Sorted = false;
+            this.comboBox2.Sorted = false;
+            this.comboBox3.Sorted = false;
         }
 
         private void Admin_FormClosing(object sender, FormClosingEventArgs e)
         {
-            trainDAO.closeConnect();
-            main.Visible = true;
+            adminCT.close();
+            Login login = new Login(main, mainCT);
+            login.Show();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             this.Close();
-            main.Visible = true;
         }
 
         private void Admin_Load(object sender, EventArgs e)
@@ -55,7 +56,8 @@ namespace Railroad.View
                 //출발역 콤보박스 추가
                 for (int i = 0; i < list.Length - 1; i++)
                 {
-                    this.comboBox1.Items.Add(list[i]);
+                    //MessageBox.Show(list[i]);
+                    this.comboBox1.Items.Insert(i, list[i]);
                 }
             }
             else if (what == 1)
@@ -64,27 +66,35 @@ namespace Railroad.View
                 //도착역 콤보박스 추가
                 for(int i = 0; i < list.Length; i++)
                 {
-                    this.comboBox2.Items.Add(list[i]);
+                    this.comboBox2.Items.Insert(i, list[i]);
                 }
             }
         }
 
         private void radioButton1_Click(object sender, EventArgs e)
         {
-            List<string> data = trainDAO.getStation("select desname from destination order by desno asc");
+            List<string> data = adminCT.get("select desname from destination order by desno asc");
             setcomboBox(data,0);
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            List<string> data = trainDAO.getStation("select desname from destination order by desno desc");
+            List<string> data = adminCT.get("select desname from destination order by desno desc");
             setcomboBox(data,0);
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) //출발역 설정
         {
-            MessageBox.Show(comboBox1.SelectedIndex+"");
-            List<string> data = trainDAO.getStation("select desname from destination where desno >'" + (comboBox1.SelectedIndex + 1) + "'");
+            //MessageBox.Show(comboBox1.SelectedIndex+"");
+            List<string> data= new List<string>();
+            if (this.radioButton1.Checked == true)
+            {
+                data = adminCT.get("select desname from destination where desno >'" + (comboBox1.SelectedIndex + 1) + "'");
+            }
+            else if (this.radioButton2.Checked == true)
+            {
+                data = adminCT.get("select desname from destination where desno <'" + (comboBox1.SelectedIndex + 1) + "'");
+            }
             setcomboBox(data, 1);
         }
 
@@ -96,11 +106,11 @@ namespace Railroad.View
                 return;
             }
 
-            List<string> data = trainDAO.getStation("select desname from destination");
+            List<string> data = adminCT.get("select desname from destination");
             int ind = data.IndexOf(this.comboBox3.SelectedItem.ToString());
-            data.Insert(ind, this.textBox13.Text);
+            data.Insert(ind + 1, this.textBox13.Text);
 
-            if (trainDAO.setStation(data) == 1)
+            if (adminCT.set(data) == 1)
             {
                 MessageBox.Show("등록이 완료되었습니다.\n자동 새로고침이 진행됩니다.", "등록 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -112,15 +122,45 @@ namespace Railroad.View
         private void afterRegis()
         {
             this.radioButton1.Select();
-            this.comboBox1.Text = "";
-            this.comboBox2.Text = "";
-            this.comboBox3.Text = "";
-            this.textBox13.Text = "";
 
-            List<string> data = trainDAO.getStation("select desname from destination order by desname asc");
+            //콤보박스 선택 인덱스 초기화
+            this.comboBox1.SelectedIndex = -1;
+            this.comboBox2.SelectedIndex = -1;
+            this.comboBox3.SelectedIndex = -1;
+
+            //기차 등록 텍스트박스 초기화
+            foreach(Control ct in splitContainer1.Panel1.Controls.OfType<TextBox>())
+            {
+                ct.Text = null;
+            }
+            //목적지 추가 텍스트박스 초기화
+            this.textBox13.Text = null;
+
+            List<string> data = adminCT.get("select desname from destination order by desno asc");
             this.comboBox3.Items.Clear();
-            this.comboBox3.Items.AddRange(data.ToArray());
+            for(int i = 0; i < data.Count; i++)
+            {
+                this.comboBox3.Items.Insert(i, data[i]);
+            }
             setcomboBox(data, 0);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            foreach (Control ct in splitContainer1.Panel1.Controls.OfType<TextBox>())
+            {
+                if (ct.Text.Equals(""))
+                {
+                    MessageBox.Show("공백이 있는지 확인해주세요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            if(this.comboBox1.SelectedIndex==-1 || this.comboBox2.SelectedIndex == -1)
+            {
+                MessageBox.Show("공백이 있는지 확인해주세요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
         }
     }
 }
