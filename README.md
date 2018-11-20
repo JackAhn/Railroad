@@ -1,2 +1,2 @@
 # Railroad
-Simple buying system with C# and MySQL
+Simple Railroad System
