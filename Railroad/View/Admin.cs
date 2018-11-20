@@ -89,11 +89,13 @@ namespace Railroad.View
             List<string> data= new List<string>();
             if (this.radioButton1.Checked == true)
             {
-                data = adminCT.get("select desname from destination where desno <>'" + (comboBox1.SelectedIndex + 1) + "' and desno >'" + (comboBox1.SelectedIndex + 1) + "'");
+                data = adminCT.get("select desname from destination where desno <>'" + (comboBox1.SelectedIndex + 1) + "" +
+                    "' and desno >'" + (comboBox1.SelectedIndex + 1) + "'");
             }
             else if (this.radioButton2.Checked == true)
             {
-                data = adminCT.get("select desname from destination where desno <>'" + (comboBox1.Items.Count - comboBox1.SelectedIndex +1) + "' and desno < '" + (comboBox1.Items.Count - comboBox1.SelectedIndex + 1) + "' order by desno desc");
+                data = adminCT.get("select desname from destination where desno <>'" + (comboBox1.Items.Count - comboBox1.SelectedIndex +1) + "' " +
+                    "and desno < '" + (comboBox1.Items.Count - comboBox1.SelectedIndex + 1) + "' order by desno desc");
             }
             setcomboBox(data, 1);
         }
@@ -206,7 +208,7 @@ namespace Railroad.View
             }
 
 
-            if(adminCT.chkDuplicate(starttime, stoptime))
+            if(adminCT.chkDuplicate(starttime, departure))
             {
                 MessageBox.Show("이 시간 사이에 운행하는 기차가 있습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;

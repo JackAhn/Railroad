@@ -39,9 +39,9 @@ namespace Railroad.Controller
             return trainDAO.addTrain(trainno, departure, starttime, destination, stoptime, seat);
         }
 
-        public bool chkDuplicate(string starttime, string stoptime)
+        public bool chkDuplicate(string starttime, string departure)
         {
-            return trainDAO.isTimeDupliate(starttime, stoptime);
+            return trainDAO.isTimeDupliate(starttime, departure);
         }
 
         public bool chkTime(string starttime, string stoptime)

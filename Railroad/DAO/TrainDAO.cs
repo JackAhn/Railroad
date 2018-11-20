@@ -51,9 +51,9 @@ namespace Railroad.DAO
         {
             //처음 실행 시 기본 DB 데이터 추가
             //executeNonQuery("drop database railroad");
-            if(executeNonQuery("create database railroad") == 1)
+            if (executeNonQuery("create database railroad") == 1)
             {
- 
+
                 executeNonQuery("use railroad");
                 executeNonQuery("create table destination(desno int primary key not null auto_increment, desname varchar(20))");
                 executeNonQuery("insert into destination values ('0', '부산')");
@@ -70,26 +70,6 @@ namespace Railroad.DAO
             {
                 executeNonQuery("use railroad");
             }
-            if (!chkTrainData()) //1시간 전 없다면
-            {
-                //새로 추가
-                executeNonQuery("delete from train where trainno='100'");
-                executeNonQuery("insert into train values ('100', '서울','"+DateTime.Now.AddMinutes(30).ToString("yyyy-MM-dd HH:mm:ss")+"', '부산', '" + DateTime.Now.AddHours(2).ToString("yyyy-MM-dd HH:mm:ss") +"', '100')");
-            }
-        }
-
-        private bool chkTrainData()
-        {
-            string query = "select * from train where starttime >='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' and stoptime<='" + DateTime.Now.AddHours(1).ToString("yyyy-MM-dd HH:mm:ss") + "'";
-            command.CommandText = query;
-            reader = command.ExecuteReader();
-            if (reader.Read())
-            {
-                reader.Close();
-                return true;
-            }
-            reader.Close();
-            return false;
         }
 
         public object[,] getTrainData(string now, string after, string depart, string destination)
@@ -188,11 +168,11 @@ namespace Railroad.DAO
             }
         }
 
-        public bool isTimeDupliate(string starttime, string stoptime)
+        public bool isTimeDupliate(string starttime, string departure)
         {
             try
             {
-                command.CommandText = "select * from train where starttime>='" + starttime + "' and stoptime<='" + stoptime + "'";
+                command.CommandText = "select * from train where starttime='" + starttime + "' and departure='" +  departure + "'";
                 reader = command.ExecuteReader();
                 if (reader.Read())
                 {

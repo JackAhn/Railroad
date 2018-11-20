@@ -39,6 +39,13 @@ namespace Railroad.View
                     tb.Select();
                     return;
                 }
+                int d = 0;
+                bool result = int.TryParse(tb.Text, out d);
+                if (!result && i>=5)
+                {
+                    MessageBox.Show("숫자를 입력해주세요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 userData[i - 1] = tb.Text;
             }
             if (!userData[2].Equals(userData[3]))
