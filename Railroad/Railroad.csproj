@@ -51,12 +51,14 @@
     <Compile Include="Controller\LoginCT.cs" />
     <Compile Include="Controller\MainCT.cs" />
     <Compile Include="Controller\MemberCT.cs" />
+    <Compile Include="Controller\TicketCT.cs" />
     <Compile Include="DAO\MemberDAO.cs" />
     <Compile Include="DAO\TicketDAO.cs" />
     <Compile Include="DAO\TrainDAO.cs" />
     <Compile Include="Model\LoginMember.cs" />
     <Compile Include="Model\Member.cs" />
     <Compile Include="Model\Station.cs" />
+    <Compile Include="Model\Ticket.cs" />
     <Compile Include="Model\Train.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,11 +98,17 @@
     <Compile Include="View\Register.designer.cs">
       <DependentUpon>Register.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Ticket.cs">
+    <Compile Include="View\TicketForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\Ticket.Designer.cs">
-      <DependentUpon>Ticket.cs</DependentUpon>
+    <Compile Include="View\TicketForm.Designer.cs">
+      <DependentUpon>TicketForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Ticketinfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Ticketinfo.Designer.cs">
+      <DependentUpon>Ticketinfo.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Traininfo.cs">
       <SubType>UserControl</SubType>
@@ -135,8 +143,11 @@
     <EmbeddedResource Include="View\Register.resx">
       <DependentUpon>Register.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Ticket.resx">
-      <DependentUpon>Ticket.cs</DependentUpon>
+    <EmbeddedResource Include="View\TicketForm.resx">
+      <DependentUpon>TicketForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Ticketinfo.resx">
+      <DependentUpon>Ticketinfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Traininfo.resx">
       <DependentUpon>Traininfo.cs</DependentUpon>

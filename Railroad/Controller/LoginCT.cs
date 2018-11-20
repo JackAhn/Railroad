@@ -41,6 +41,8 @@ namespace Railroad.Controller
                 setMemberdata(text1, text2, membername, memberDAO); //모델에 데이터 저장
                 MessageBox.Show(membername + "님 환영합니다.", "로그인 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 main.label1.Text = membername+"님 환영합니다.";
+                main.setStationData();
+                main.setTimetable();
                 main.Visible = true;
                 login.Close();
                 return;

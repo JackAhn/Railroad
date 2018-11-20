@@ -24,7 +24,6 @@ namespace Railroad.DAO
             con.Open();
             command = con.CreateCommand();
             initDB(); //db 초기화
-            executeNonQuery("use railroad");
         }
 
         public TrainDAO getInstance()
@@ -51,9 +50,10 @@ namespace Railroad.DAO
         private void initDB()
         {
             //처음 실행 시 기본 DB 데이터 추가
-            executeNonQuery("drop database railroad");
+            //executeNonQuery("drop database railroad");
             if(executeNonQuery("create database railroad") == 1)
             {
+ 
                 executeNonQuery("use railroad");
                 executeNonQuery("create table destination(desno int primary key not null auto_increment, desname varchar(20))");
                 executeNonQuery("insert into destination values ('0', '부산')");
@@ -62,24 +62,25 @@ namespace Railroad.DAO
                     "memberpw varchar(30), memberphone varchar(40))");
                 executeNonQuery("create table train(trainno int primary key not null, departure varchar(20), starttime datetime, destination varchar(20), stoptime datetime," +
                     " seat int)");
-                executeNonQuery("create table ticket(ticketno int, memberno int, membername varchar(15), trainno int, departure varchar(20), destination varchar(20), starttime datetime, stoptime datetime, " +
+                executeNonQuery("create table ticket(ticketno int primary key not null auto_increment, memberno int, membername varchar(15), trainno int, departure varchar(20), destination varchar(20), starttime datetime, stoptime datetime, buytime datetime, " +
                     "foreign key(memberno) references member(memberno) on update cascade on delete cascade, foreign key(trainno) references train(trainno) on delete cascade)");
-                executeNonQuery("SET SQL_SAFE_UPDATES 0");
+                executeNonQuery("SET SQL_SAFE_UPDATES = 0");
             }
             else
             {
                 executeNonQuery("use railroad");
             }
-            if (!chkTrainData()) //5일 후까지의 기차 데이터가 없다면
+            if (!chkTrainData()) //1시간 전 없다면
             {
                 //새로 추가
-                executeNonQuery("insert into train values ('1000', '서울','"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+"', '부산', '" + DateTime.Now.AddHours(2).ToString("yyyy-MM-dd HH:mm:ss") +"', '100')");
+                executeNonQuery("delete from train where trainno='100'");
+                executeNonQuery("insert into train values ('100', '서울','"+DateTime.Now.AddMinutes(30).ToString("yyyy-MM-dd HH:mm:ss")+"', '부산', '" + DateTime.Now.AddHours(2).ToString("yyyy-MM-dd HH:mm:ss") +"', '100')");
             }
         }
 
         private bool chkTrainData()
         {
-            string query = "select * from train where starttime >='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' and stoptime<='" + DateTime.Now.AddDays(5).ToString("yyyy-MM-dd") + " 23:59:59'";
+            string query = "select * from train where starttime >='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' and stoptime<='" + DateTime.Now.AddHours(1).ToString("yyyy-MM-dd HH:mm:ss") + "'";
             command.CommandText = query;
             reader = command.ExecuteReader();
             if (reader.Read())
@@ -91,11 +92,11 @@ namespace Railroad.DAO
             return false;
         }
 
-        public object[,] getTrainData(string now, string after)
+        public object[,] getTrainData(string now, string after, string depart, string destination)
         {
-            command.CommandText = "select count(*) from train where starttime>='" + now + "' and stoptime<='" + after + "'";
+            command.CommandText = "select count(*) from train where starttime>='" + now + "' and stoptime<='" + after + "' and departure like '%" + depart + "%' and destination like '%" + destination + "%'";
             reader = command.ExecuteReader();
-            object [,] data= new object[0,0];
+            object [,] data= new object[0,6];
             if (reader.Read())
             {
                 data = new object[reader.GetInt32(0), 6];
@@ -103,7 +104,7 @@ namespace Railroad.DAO
 
             reader.Close();
 
-            command.CommandText = "select * from train where starttime>='" + now + "' and stoptime<='" + after + "'";
+            command.CommandText = "select * from train where starttime>='" + now + "' and stoptime<='" + after + "' and departure like '%" + depart + "%' and destination like '%" + destination + "%'";
             reader = command.ExecuteReader();
             int a = 0;
             while (reader.Read())

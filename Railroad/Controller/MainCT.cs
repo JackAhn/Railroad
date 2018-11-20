@@ -23,9 +23,9 @@ namespace Railroad.Controller
             ticketDAO = ticketDAO.getInstance();
         }
 
-        public void setTrainData(List<Train> trainData, string now, string after)
+        public void setTrainData(List<Train> trainData, string now, string after, string depart, string destination)
         {
-            object[,] data = trainDAO.getTrainData(now, after);
+            object[,] data = trainDAO.getTrainData(now, after, depart, destination);
 
             for(int i = 0; i < data.GetLength(0); i++)
             {
@@ -50,9 +50,9 @@ namespace Railroad.Controller
             main.flowLayoutPanel1.Controls.Add(traininfo);
         }
 
-        public int setTicketData(string memno, string memname, int trainno, string depart, string destination, string start, string stop)
+        public int setTicketData(string memno, string memname, int trainno, string depart, string destination, string start, string stop, string now)
         {
-            return ticketDAO.addTicket(memno, memname, trainno, depart, destination, start, stop);
+            return ticketDAO.addTicket(memno, memname, trainno, depart, destination, start, stop, now);
         }
 
         public void setmemberNull()
@@ -75,6 +75,31 @@ namespace Railroad.Controller
             return false;
         }
 
+        public List<string> getStation(string query)
+        {
+            return trainDAO.getStation(query);
+        }
+
+        public bool isBefore(string now, string starttime)
+        {
+            DateTime nowtime = DateTime.Parse(now);
+            DateTime start = DateTime.Parse(starttime);
+            int data = DateTime.Compare(nowtime, start);
+            if (data > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void showTicket(string memno, int trainno, string now)
+        {
+            TicketForm ticket = new TicketForm(memno, trainno, now);
+            ticket.Show();
+        }
 
         public void close()
         {

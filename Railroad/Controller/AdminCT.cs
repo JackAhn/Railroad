@@ -55,6 +55,17 @@ namespace Railroad.Controller
                 return true;
         }
 
+        public bool isBeforeTime(string starttime)
+        {
+            DateTime now = DateTime.Now;
+            DateTime start = DateTime.Parse(starttime);
+            int result = DateTime.Compare(now, start);
+            if (result <= 0)
+                return true;
+            else
+                return false;
+        }
+
         public void close()
         {
             trainDAO.closeConnect();

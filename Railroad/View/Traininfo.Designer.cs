@@ -81,9 +81,9 @@
             // trainNo
             // 
             this.trainNo.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.trainNo.Location = new System.Drawing.Point(24, 51);
+            this.trainNo.Location = new System.Drawing.Point(18, 51);
             this.trainNo.Name = "trainNo";
-            this.trainNo.Size = new System.Drawing.Size(43, 15);
+            this.trainNo.Size = new System.Drawing.Size(61, 15);
             this.trainNo.TabIndex = 2;
             this.trainNo.Text = "label4";
             this.trainNo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -124,9 +124,9 @@
             // seat
             // 
             this.seat.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.seat.Location = new System.Drawing.Point(335, 50);
+            this.seat.Location = new System.Drawing.Point(327, 50);
             this.seat.Name = "seat";
-            this.seat.Size = new System.Drawing.Size(43, 15);
+            this.seat.Size = new System.Drawing.Size(58, 15);
             this.seat.TabIndex = 2;
             this.seat.Text = "100";
             this.seat.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

@@ -89,11 +89,11 @@ namespace Railroad.View
             List<string> data= new List<string>();
             if (this.radioButton1.Checked == true)
             {
-                data = adminCT.get("select desname from destination where desno >'" + (comboBox1.SelectedIndex + 1) + "'");
+                data = adminCT.get("select desname from destination where desno <>'" + (comboBox1.SelectedIndex + 1) + "' and desno >'" + (comboBox1.SelectedIndex + 1) + "'");
             }
             else if (this.radioButton2.Checked == true)
             {
-                data = adminCT.get("select desname from destination where desno <'" + (comboBox1.SelectedIndex + 1) + "'");
+                data = adminCT.get("select desname from destination where desno <>'" + (comboBox1.Items.Count - comboBox1.SelectedIndex +1) + "' and desno < '" + (comboBox1.Items.Count - comboBox1.SelectedIndex + 1) + "' order by desno desc");
             }
             setcomboBox(data, 1);
         }
@@ -143,6 +143,14 @@ namespace Railroad.View
                 this.comboBox3.Items.Insert(i, data[i]);
             }
             setcomboBox(data, 0);
+
+            //출발시간을 현재시간 + 30분으로 설정
+            DateTime now = DateTime.Now.AddMinutes(30);//현재 시간에서 30분 추가
+            this.textBox2.Text = now.ToString("yyyy");
+            this.textBox3.Text = now.ToString("MM");
+            this.textBox4.Text = now.ToString("dd");
+            this.textBox5.Text = now.ToString("HH");
+            this.textBox6.Text = now.ToString("mm"); 
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -184,6 +192,13 @@ namespace Railroad.View
             string stoptime = this.textBox7.Text + "-" + this.textBox8.Text + "-" + this.textBox9.Text + " " + this.textBox10.Text + ":" + this.textBox11.Text;
             string seat = this.textBox12.Text;
 
+            if (!adminCT.isBeforeTime(starttime))
+            {
+                MessageBox.Show("출발시간이 현재시간보다 이전일 수 없습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+
             if(!adminCT.chkTime(starttime, stoptime))
             {
                 MessageBox.Show("출발시간이 도착시간이랑 같거나 도착시간보다 늦으면 안 됩니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -207,5 +222,6 @@ namespace Railroad.View
                 MessageBox.Show("에러 발생", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
     }
 }
